@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Project.Models
+{
+    public partial class Recipe
+    {
+        public Recipe()
+        {
+            MealsRecipes = new HashSet<MealsRecipe>();
+            RecipesIngredients = new HashSet<RecipesIngredient>();
+        }
+
+        public int Id { get; set; }
+        public string? Name { get; set; }
+
+        public virtual ICollection<MealsRecipe> MealsRecipes { get; set; }
+        public virtual ICollection<RecipesIngredient> RecipesIngredients { get; set; }
+    }
+}
