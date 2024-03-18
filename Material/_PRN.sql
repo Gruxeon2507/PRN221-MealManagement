@@ -21,7 +21,7 @@ GO
 
 CREATE TABLE [ingredients] (
   [id] integer PRIMARY KEY,
-  [name] integer,
+  [name] nvarchar(255),
   [price] integer
 )
 GO

@@ -11,7 +11,7 @@ namespace Project.Models
         }
 
         public int Id { get; set; }
-        public int? Name { get; set; }
+        public string? Name { get; set; }
         public int? Price { get; set; }
 
         public virtual ICollection<RecipesIngredient> RecipesIngredients { get; set; }
