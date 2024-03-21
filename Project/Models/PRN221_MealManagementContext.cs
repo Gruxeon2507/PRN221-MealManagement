@@ -53,16 +53,18 @@ namespace Project.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.CreatedBy).HasColumnName("createdBy");
-
-                entity.Property(e => e.Date)
+                entity.Property(e => e.CreatedBy)
                     .HasColumnType("datetime")
-                    .HasColumnName("date");
+                    .HasColumnName("createdBy");
 
-                entity.HasOne(d => d.CreatedByNavigation)
+                entity.Property(e => e.Message).HasColumnName("message");
+
+                entity.Property(e => e.UserId).HasColumnName("userId");
+
+                entity.HasOne(d => d.User)
                     .WithMany(p => p.Meals)
-                    .HasForeignKey(d => d.CreatedBy)
-                    .HasConstraintName("FK__meals__createdBy__2E1BDC42");
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK__meals__userId__32E0915F");
             });
 
             modelBuilder.Entity<MealsRecipe>(entity =>
