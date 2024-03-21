@@ -9,9 +9,11 @@ namespace Project.Pages.Login
         public string Error { get; set; }
         
         private readonly PRN221_MealManagementContext _context;
-        public IndexModel(PRN221_MealManagementContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public IndexModel(PRN221_MealManagementContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
         public void OnGet()
         {
@@ -22,6 +24,9 @@ namespace Project.Pages.Login
             {
                 if(user.Password==password)
                 {
+                    var session = _httpContextAccessor.HttpContext.Session;
+                    session.SetString("username",user.Username);
+                    session.SetString("role",user.Role);
                     return RedirectToPage("/Ingredient/Index");
                 }
             }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -12,34 +11,46 @@ namespace Project.Pages.Recipe
 {
     public class EditModel : PageModel
     {
-        private readonly Project.Models.PRN221_MealManagementContext _context;
+        private readonly PRN221_MealManagementContext _context;
 
-        public EditModel(Project.Models.PRN221_MealManagementContext context)
+        public EditModel(PRN221_MealManagementContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public Models.Recipe Recipe { get; set; } = default!;
+        public Models.Recipe Recipe { get; set; }
+
+        [BindProperty]
+        public int SelectedIngredient { get; set; }
+
+        public SelectList AvailableIngredients { get; set; }
+        public List<Models.Ingredient> Ingredients { get; set; }
+        public List<Models.RecipesIngredient> RecipesIngredients { get; set; }
+        [BindProperty]
+        public int RemoveIngredientIds { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Recipes == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var recipe =  await _context.Recipes.FirstOrDefaultAsync(m => m.Id == id);
-            if (recipe == null)
+            Recipe = await _context.Recipes.Include(r=>r.RecipesIngredients).FirstOrDefaultAsync(m => m.Id == id);
+
+            if (Recipe == null)
             {
                 return NotFound();
             }
-            Recipe = recipe;
+
+            Ingredients = await _context.Ingredients.ToListAsync();
+            AvailableIngredients = new SelectList(Ingredients, "Id", "Name");
+            RecipesIngredients = await _context.RecipesIngredients.Include(re => re.Ingredient).Where(re => re.RecipeId == id).ToListAsync();
+
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -47,7 +58,33 @@ namespace Project.Pages.Recipe
                 return Page();
             }
 
-            _context.Attach(Recipe).State = EntityState.Modified;
+            // Remove ingredients
+            if (RemoveIngredientIds != null)
+            {
+                    var ingredientToRemove = await _context.RecipesIngredients.FirstOrDefaultAsync(re => re.IngredientId == RemoveIngredientIds && re.RecipeId == Recipe.Id);
+
+                    if (ingredientToRemove != null)
+                    {
+                        _context.RecipesIngredients.Remove(ingredientToRemove);
+                    }
+                
+            }
+
+            // Add selected ingredient to the recipe if not already present
+            if (SelectedIngredient != 0 && !Recipe.RecipesIngredients.Any(ri => ri.IngredientId == SelectedIngredient))
+            {
+
+                var check = _context.RecipesIngredients.Where(re => re.IngredientId == SelectedIngredient && re.RecipeId == Recipe.Id).FirstOrDefault();
+                if (check == null) { 
+                var newRecipeIngredient = new RecipesIngredient
+                {
+                    IngredientId = SelectedIngredient,
+                    RecipeId = Recipe.Id
+                };
+
+                _context.RecipesIngredients.Add(newRecipeIngredient);
+                }
+            }
 
             try
             {
@@ -68,9 +105,10 @@ namespace Project.Pages.Recipe
             return RedirectToPage("./Index");
         }
 
+
         private bool RecipeExists(int id)
         {
-          return (_context.Recipes?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _context.Recipes.Any(e => e.Id == id);
         }
     }
 }

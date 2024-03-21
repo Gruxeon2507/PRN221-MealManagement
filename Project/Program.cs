@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Project.MealHubs;
 using Project.Models;
 using System;
 
@@ -16,6 +17,14 @@ builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
 });
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+});
+
+builder.Services.AddSignalR();
+
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
@@ -31,6 +40,7 @@ app.UseRouting();
 app.UseSession();
 app.UseAuthorization();
 
+app.MapHub<MealHubs>("/SignalRHub");
 
 app.MapRazorPages();
 

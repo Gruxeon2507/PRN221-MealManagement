@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    // Accessing session value
+    string username = Context.Session.GetString("username");
+    string role = Context.Session.GetString("role");
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -12,20 +17,35 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Project</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Meal Manager</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-evenly">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-dark"  href="/Timetable">Timetable</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-dark"  href="/Recipe">Recipe</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"  href="/Ingredient">Ingredient</a>
+                        </li>
+                        @if (role != null)
+                        {
+                            <li>
+                                <a class="nav-link text-dark" href="/Statistic">Statistic</a>
+                            </li>
+                        }
                     </ul>
+                    <div class="nav-item">
+                        @if (username != null)
+                        {
+                            @username
+                        }
+                    </div>
                 </div>
             </div>
         </nav>

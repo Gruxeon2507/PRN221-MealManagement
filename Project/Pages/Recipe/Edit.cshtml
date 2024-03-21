@@ -13,6 +13,29 @@
                 <input asp-for="Recipe.Name" class="form-control" />
                 <span asp-validation-for="Recipe.Name" class="text-danger"></span>
             </div>
+            <h5>Ingredient</h5>
+            <div class="form-group">
+                <label asp-for="SelectedIngredient" class="control-label" title="Select Ingredient To Add"></label>
+                <select asp-for="SelectedIngredient" class="form-control">
+                    <option value="">-- Select Ingredient --</option>
+                    @foreach(var i in Model.Ingredients)
+                    {
+                        <option value="@i.Id">@i.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="SelectedIngredient" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="button" value="Add Ingredient" class="btn btn-success" onclick="addIngredient()" />
+            </div>
+            <ul id="ingredientList" class="list-group">
+                @foreach (var ingredient in Model.RecipesIngredients)
+                {
+                    <li class="list-group-item">@ingredient.Ingredient.Name</li>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removeIngredient('@ingredient.Id')">Remove</button>
+                    <input type="hidden" name="RemoveIngredientIds" value="@ingredient.Id" />
+                }
+            </ul>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -25,5 +48,29 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function addIngredient() {
+            var selectedIngredient = document.getElementById('SelectedIngredient');
+            var ingredientList = document.getElementById('ingredientList');
+            var option = selectedIngredient.options[selectedIngredient.selectedIndex];
+            var ingredientName = option.text;
+            var ingredientId = option.value;
+
+            // Add the ingredient to the list
+            var listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.innerText = ingredientName;
+            ingredientList.appendChild(listItem);
+
+            // Add a hidden input to store the ingredient ID
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'Recipe.Ingredients[' + ingredientId + '].Id';
+            hiddenInput.value = ingredientId;
+            listItem.appendChild(hiddenInput);
+        }
+    </script>
 }

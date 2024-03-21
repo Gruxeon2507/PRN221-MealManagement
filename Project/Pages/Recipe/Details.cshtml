@@ -1,19 +1,175 @@
 ﻿@page
 @model Project.Pages.Recipe.DetailsModel
+<style>
+    /* Popup container */
+    .popup {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 999; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        padding-top: 60px; /* Place content 60px from the top */
+    }
 
-<div>
-    <h4>Recipe</h4>
+    /* Popup content */
+    .popup-content {
+        background-color: #fefefe;
+        margin: 5% auto; /* 5% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    /* Close button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
+
+<div class="d-flex">
+
+<div class="col-sm-12">
+    <div class="d-flex justify-content-between">
+        <h4>Recipe</h4>
+        <div>
+            <button class="btn btn-primary" onclick="openPopup()">Edit</button> |
+            <a asp-page="./Index">Back to List</a>
+        </div>
+    </div>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Recipe.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Recipe.Name)
-        </dd>
-    </dl>
+    <div class="d-flex justify-content-between">
+        <div class="col-sm-7">
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Recipe.Name)
+                </dt>
+                <dd class="col-sm-7">
+                    @Html.DisplayFor(model => model.Recipe.Name)
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="col-sm-3">
+                    Total Cost
+                </dt>
+                <dd class="col-sm-7">
+                    @Model.TotalCost
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="col-sm-3">
+                    Tutorial
+                </dt>
+                <dd class="col-sm-7">
+                    This is how to cook the food
+                </dd>
+            </dl>
+        </div>
+        <div>
+             <img height="300" width="300" src="https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/0346a29a89ef229b1a0ff9697184f944/Derivates/cb5051204f4a4525c8b013c16418ae2904e737b7.jpg" />
+        </div>
+    </div>
+    
+    <table class="table">
+        <thead>
+            <tr>
+            <th class="col-sm-5 heigt">Ingredient</th>
+            <th class="col-sm-5">Amount</th>
+            <th class="col-sm-2">Action</th>
+            </tr>
+        </thead>
+    @foreach (var re in Model.RecipesIngredients)
+    {
+        <tr>
+            <td>@re.Ingredient.Name</td>
+            <td>@re.Amount</td>
+            <td class="d-flex">
+                <form method="post">                    
+                    <input type="hidden" value="@re.IngredientId" name="removedId"/>
+                    <input type="hidden" value="@Model.Recipe.Id" name="recipeId" />
+
+                            <button type="submit" class="btn btn-danger me-1">Remove</button>
+                </form>
+                        <button class="btn btn btn-info" onclick="nav(@re.IngredientId)">Details</button>
+             </td>
+        </tr>
+    }
+    </table>
 </div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Recipe?.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2 class="mb-3">Select Ingredient To Add</h2>
+            <form method="post" class="needs-validation" novalidate>
+                <div class="form-group">
+                    <label for="ingredientSelect">Ingredient</label>
+                    <select id="ingredientSelect" name="addedId" class="form-control" required>
+                        @foreach (var i in Model.AddedIngredients)
+                        {
+                            <option value="@i.   Id">@i.Name</option>
+                        }
+                    </select>
+                    <div class="invalid-feedback">Please select an ingredient.</div>
+                </div>
+                <div class="form-group">
+                    <label for="amountInput">Amount</label>
+                    <input type="number" id="amountInput" name="amount" class="form-control" placeholder="Enter amount" required>
+                    <div class="invalid-feedback">Please enter the amount.</div>
+                </div>
+                <input type="hidden" value="@Model.Recipe.Id" name="recipeId" />
+                <button type="submit" class="btn btn-primary mt-1">Submit</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        function openPopup() {
+            document.getElementById("popup").style.display = "block";
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        // Optional: Handle form submission using AJAX
+        document.getElementById("ingredientForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        closePopup();
+                        // Optionally, you can reload the page or update the ingredient list without reloading
+                    } else {
+                        console.error('Form submission failed.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
 </div>
+<script>
+    function nav(id) {
+        window.location.href = `/Ingredient/Details?id=${id}`;
+    }
+</script>
