@@ -1,0 +1,45 @@
+﻿@{
+}
+@model List<Project.Models.Recipe>
+@using Project.Models
+
+@{
+    long total = 0;
+}
+@{
+    long totalAll = 0;
+    @foreach(Recipe item in Model)
+    {
+        @foreach (RecipesIngredient ri in item.RecipesIngredients)
+        {
+                    totalAll += (long)ri.Amount * (long)ri.Ingredient.Price;
+        }
+    }
+}
+<div class="recipe-details">
+    <h2>@Model.Last().Name</h2>
+    <table>
+        <tr>
+            <th>Ingredients</th>
+            <th>Amount</th>
+            <th>Unit Price</th>
+        </tr>
+        @foreach (RecipesIngredient ri in Model.Last().RecipesIngredients)
+        {
+            <tr>
+                <td>@ri.Ingredient.Name</td>
+                <td>@ri.Amount</td>
+                <td>@ri.Ingredient.Price</td>
+                @{
+                    total += (long)ri.Amount * (long)ri.Ingredient.Price;
+                }
+            </tr>
+        }
+        <tr>
+            <td>Total:</td>
+            <td></td>
+            <td>@total</td>
+        </tr>
+    </table>
+    <h2>Total All: @totalAll</h2>
+</div>

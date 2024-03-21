@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Project.Models;
@@ -27,6 +28,7 @@ namespace Project.Pages.Login
                     var session = _httpContextAccessor.HttpContext.Session;
                     session.SetString("username",user.Username);
                     session.SetString("role",user.Role);
+                    HttpContext.Session.SetString("user", JsonSerializer.Serialize(user));
                     return RedirectToPage("/Ingredient/Index");
                 }
             }

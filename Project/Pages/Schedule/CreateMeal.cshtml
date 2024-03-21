@@ -1,0 +1,66 @@
+﻿@page
+@model Project.Pages.Schedule.CreateMealModel
+@{
+}
+@using System.Text.Json
+@using Project.Models
+<style>
+table, th, td {
+  border:1px solid black;
+}
+</style>
+<h4>Create Meal</h4>
+<form method="post">
+	Choose your dish:
+    <select id="recipes" name="recipes" class="form-select" multiple aria-label="multiple select example">
+		@foreach(Recipe item in Model.Recipes)
+		{
+			<option value="@item.Id">@item.Name</option>
+		}
+	</select>
+	<br />
+	Message:
+	<textarea name="message"></textarea>
+	<input type="hidden" name="createdDay" value="@Model.CreatedDay" />
+	<button>Create Meal</button>
+</form>
+<a href="/Schedule/Index">Back to Calendar</a>
+<div id="recipeDetails"></div>
+<script>
+    $('#recipes').change(function () {
+        var selectedRecipeId = $(this).val();
+        let url = '/Schedule/CreateMeal?handler=RecipeDetails'
+        selectedRecipeId.forEach(function(data, index){
+            url += '&recipeId='+data;
+        })
+        console.log(url);
+        if (selectedRecipeId) {
+            // Make an AJAX request to fetch details of the selected recipe
+            $.ajax({
+                type: 'GET',
+                url: url
+                //'/Schedule/CreateMeal?handler=RecipeDetails'
+                ,
+                data: { recipeId: selectedRecipeId },
+                success: function (response) {
+                    console.log('/Schedule/CreateMeal?handler=RecipeDetails&recipeId=' + selectedRecipeId)
+                    // Update the recipeDetails div with the fetched recipe details
+                    console.log("Recipe details:", response);
+                    var recipeDetailsElement = $('#recipeDetails');
+                    if (recipeDetailsElement.length > 0) {
+                        recipeDetailsElement.html(response);
+                    } else {
+                        console.error('Element #recipeDetails not found');
+                    }
+                    //$('#recipeDetails').html(response);
+                },
+                error: function (xhr, status, error) {
+                    // Handle error if needed
+                    console.error('Error:', error);
+                }
+            });
+        } else {
+            $('#recipeDetails').empty(); // Clear the recipeDetails div if no recipe is selected
+        }
+    });
+</script>

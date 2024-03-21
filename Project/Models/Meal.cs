@@ -11,10 +11,11 @@ namespace Project.Models
         }
 
         public int Id { get; set; }
-        public DateTime? Date { get; set; }
-        public int? CreatedBy { get; set; }
+        public string? Message { get; set; }
+        public DateTime? CreatedBy { get; set; }
+        public int? UserId { get; set; }
 
-        public virtual User? CreatedByNavigation { get; set; }
+        public virtual User? User { get; set; }
         public virtual ICollection<MealsRecipe> MealsRecipes { get; set; }
     }
 }
