@@ -22,6 +22,7 @@ namespace Project.Pages.Recipe
         public List<Models.RecipesIngredient> RecipesIngredients { get; set; }
         public List<Models.Ingredient> AddedIngredients { get; set; }
         public int TotalCost { get; set; } = 0;
+        public int TotalCalories { get; set; } = 0;
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null || _context.Recipes == null)
@@ -44,6 +45,10 @@ namespace Project.Pages.Recipe
                     {
                         TotalCost += ri.Amount.Value * ri.Ingredient.Price.Value;
 
+                    }
+                    if (ri.Ingredient.Calories != null)
+                    {
+                        TotalCalories += ri.Ingredient.Calories.Value;
                     }
                 }
                 AddedIngredients = await _context.Ingredients.ToListAsync();

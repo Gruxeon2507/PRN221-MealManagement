@@ -70,7 +70,9 @@ namespace Project.Pages.Ingredient
                         var excelData = new Models.Ingredient
                         {
                             Name = worksheet.Cells[row, 1].Value.ToString(),
-                            Price = int.Parse(worksheet.Cells[row, 2].Value.ToString())
+                            Price = int.Parse(worksheet.Cells[row, 2].Value.ToString()),
+                            Calories = int.Parse(worksheet.Cells[row, 3].Value.ToString())
+
                         };
                         var existed = await _context.Ingredients.Where(i => i.Name == excelData.Name).FirstOrDefaultAsync();
                         if (existed != null)
@@ -97,6 +99,7 @@ namespace Project.Pages.Ingredient
                 // Add headers
                 worksheet.Cells[1, 1].Value = "Name";
                 worksheet.Cells[1, 2].Value = "Price";
+                worksheet.Cells[1, 3].Value = "Calories";
 
                 // Add data
                 int row = 2;
@@ -104,6 +107,7 @@ namespace Project.Pages.Ingredient
                 {
                     worksheet.Cells[row, 1].Value = item.Name;
                     worksheet.Cells[row, 2].Value = item.Price;
+                    worksheet.Cells[row, 3].Value = item.Calories;
                     row++;
                 }
 

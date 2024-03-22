@@ -19,3 +19,8 @@ add userId int
 alter table meals
 add foreign key (userId) references users(id)
 
+alter table ingredients
+add calories int
+
+alter table recipes
+add images nvarchar(MAX)

@@ -46,7 +46,7 @@
     <div class="d-flex justify-content-between">
         <h4>Recipe</h4>
         <div>
-            <button class="btn btn-primary" onclick="openPopup()">Edit</button> |   
+            <button class="btn btn-primary" onclick="openPopup()">Add Ingredients</button> |   
             <a asp-page="./Index">Back to List</a>
         </div>
     </div>
@@ -69,6 +69,14 @@
                     @Model.TotalCost
                 </dd>
             </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        Total Calories
+                    </dt>
+                    <dd class="col-sm-7">
+                       @Model.TotalCalories
+                    </dd>
+                </dl>
             <dl class="row">
                 <dt class="col-sm-3">
                     Tutorial
@@ -79,7 +87,7 @@
             </dl>
         </div>
         <div>
-             <img height="300" width="300" src="https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/0346a29a89ef229b1a0ff9697184f944/Derivates/cb5051204f4a4525c8b013c16418ae2904e737b7.jpg" />
+             <img height="300" width="300" src="@Model.Recipe.Images" />
         </div>
     </div>
     
