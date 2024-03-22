@@ -25,9 +25,15 @@ namespace Project.Pages.Recipe
         public int CurrentPage { get; private set; } = 1;
         public int Page = 1;
         public string SearchInput;
-        public async Task OnGetAsync(string searchInput)
+        public async Task<IActionResult> OnGetAsync(string searchInput)
         {
-            if(!string.IsNullOrEmpty(searchInput))
+            string data = HttpContext.Session.GetString("user");
+            User user = new User();
+            if (data == null)
+            {
+                return RedirectToPage("/Login/Index");
+            }
+            if (!string.IsNullOrEmpty(searchInput))
             {
                 Recipe = await _context.Recipes.Where(r => r.Id.ToString() == searchInput || r.Name.Contains(searchInput)).ToListAsync();
                 SearchInput=searchInput;
@@ -51,6 +57,7 @@ namespace Project.Pages.Recipe
             TotalPages = TotalPages = (int)Math.Ceiling(Recipe.Count / (double)PageSize);
             CurrentPage = CurrentPage < 1 ? 1 : (CurrentPage > TotalPages ? TotalPages : CurrentPage);
             Recipe = Recipe.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            return Page();
         }
     }
 }

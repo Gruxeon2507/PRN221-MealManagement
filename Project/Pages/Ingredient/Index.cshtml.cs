@@ -25,8 +25,14 @@ namespace Project.Pages.Ingredient
         public int CurrentPage { get; private set; } = 1;
         public int Page = 1;
         public string SearchInput;
-        public async Task OnGetAsync(string searchInput)
+        public async Task<IActionResult> OnGetAsync(string searchInput)
         {
+            string data = HttpContext.Session.GetString("user");
+            User user = new User();
+            if (data == null)
+            {
+                return RedirectToPage("/Login/Index");
+            }
             if (!string.IsNullOrEmpty(searchInput))
             {
                 Ingredient = await _context.Ingredients.Where(r => r.Id.ToString() == searchInput || r.Name.Contains(searchInput)).ToListAsync();
@@ -51,6 +57,7 @@ namespace Project.Pages.Ingredient
             TotalPages = TotalPages = (int)Math.Ceiling(Ingredient.Count / (double)PageSize);
             CurrentPage = CurrentPage < 1 ? 1 : (CurrentPage > TotalPages ? TotalPages : CurrentPage);
             Ingredient = Ingredient.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(List<IFormFile> files,int export)

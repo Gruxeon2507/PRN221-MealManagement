@@ -18,8 +18,14 @@ namespace Project.Pages.Statistic
         {
             _context = context;
         }
-        public void OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            string data = HttpContext.Session.GetString("user");
+            User user = new User();
+            if (data == null)
+            {
+                return RedirectToPage("/Login/Index");
+            }
             // Count the number of users
             NoUser = _context.Users.Count();
 
@@ -45,6 +51,7 @@ namespace Project.Pages.Statistic
              .OrderByDescending(i => i.RecipesIngredients.Count)
              .Take(5)
              .ToList();
+            return Page();
         }
     }
 }

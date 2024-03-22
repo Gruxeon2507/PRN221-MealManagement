@@ -1,8 +1,14 @@
 ﻿@page
 @model Project.Pages.Ingredient.IndexModel
-
+@{
+    string role = HttpContext.Session.GetString("role");
+}
 <div class="d-flex align-items-center mb-2">
-    <a asp-page="Create" class="btn btn-primary me-2">Create New</a>
+    @if (role == "admin")
+    {
+            <a asp-page="Create" class="btn btn-primary me-2">Create New</a>
+    }
+
     <form method="get" class="d-flex ms-2">
         <div class="d-flex">
             <input type="text" name="searchInput" value="@Request.Query["searchInput"]" />
@@ -13,10 +19,12 @@
     </form>
 </div>
 <div class="d-flex">
-    <form method="post" enctype="multipart/form-data" class="me-2" id="uploadForm">
-        <input type="file" name="files" />
-        <button class="btn btn-primary" type="submit">Upload</button>
-    </form>
+    @if(role=="admin"){
+        <form method="post" enctype="multipart/form-data" class="me-2" id="uploadForm">
+            <input type="file" name="files" />
+            <button class="btn btn-primary" type="submit">Upload</button>
+        </form>
+    }
 
     <form method="post" id="exportForm">
         <input type="hidden" name="export" value="1" />
@@ -51,9 +59,12 @@
                 @Html.DisplayFor(modelItem => item.Calories)
              </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> 
+                    @if (role == "admin")
+                    {
+                     <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> 
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    }
             </td>
         </tr>
 }

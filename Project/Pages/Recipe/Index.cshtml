@@ -1,8 +1,13 @@
 ﻿@page
 @model Project.Pages.Recipe.IndexModel
-
+@{
+    string role = HttpContext.Session.GetString("role");
+}
 <div class="d-flex">
-     <a asp-page="Create" class="btn btn-primary">Create New</a>
+    @if (role == "admin")
+    {
+        <a asp-page="Create" class="btn btn-primary me-2">Create New</a>
+    }
     <form method="get" class="d-flex ms-2">
         <div class="d-flex">
             <input type="text" name="searchInput" value="@Request.Query["searchInput"]" />
@@ -31,7 +36,11 @@
             </td>
             <td>
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    @if (role == "admin")
+                    {
+                        
                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    }
             </td>
         </tr>
 }
