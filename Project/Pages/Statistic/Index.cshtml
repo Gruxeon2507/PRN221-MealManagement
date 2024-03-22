@@ -1,0 +1,88 @@
+﻿@page
+@model Project.Pages.Statistic.IndexModel
+
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <h1>Statistic</h1>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h2 class="card-title">Number Of Users</h2>
+                    <p class="card-text">@Model.NoUser</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h2 class="card-title">Average Meal Calories</h2>
+                    <p class="card-text">@Model.AverageCalories</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h2 class="card-title">Average Meal Cost</h2>
+                    <p class="card-text">@Model.AverageMealCost</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h2 class="card-title">Top 5 Recipes</h2>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var r in Model.Top5Recipes)
+                        {
+                            <li class="list-group-item">@r.Name</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h2 class="card-title">Top 5 Ingredients</h2>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var r in Model.Top5Ingredients)
+                        {
+                            <li class="list-group-item">@r.Name</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .list-group-item {
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    }
+
+        .list-group-item:last-child {
+            border-bottom: none;
+        }
+</style>

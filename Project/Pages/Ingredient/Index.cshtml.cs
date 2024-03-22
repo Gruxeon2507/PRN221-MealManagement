@@ -78,6 +78,7 @@ namespace Project.Pages.Ingredient
                         if (existed != null)
                         {
                             existed.Price = excelData.Price;
+                            existed.Calories = excelData.Calories;
                             _context.Ingredients.Update(existed);
                         }
                         else
@@ -89,7 +90,7 @@ namespace Project.Pages.Ingredient
                     _context.SaveChanges();
                 }
             }
-            if (export != null)
+            if (export != null&& export>0)
             {
                 var excelPackage = new ExcelPackage();
                 var worksheet = excelPackage.Workbook.Worksheets.Add("Sheet1");

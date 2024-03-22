@@ -46,7 +46,8 @@
     <div class="d-flex justify-content-between">
         <h4>Recipe</h4>
         <div>
-            <button class="btn btn-primary" onclick="openPopup()">Add Ingredients</button> |   
+            <button class="btn btn-primary" onclick="openPopup()">Add Ingredients</button> |
+                <button class="btn btn-secondary" onclick="printPage()">Print</button> | <!-- New Print Button -->
             <a asp-page="./Index">Back to List</a>
         </div>
     </div>
@@ -179,5 +180,8 @@
 <script>
     function nav(id) {
         window.location.href = `/Ingredient/Details?id=${id}`;
+    }
+    function printPage() {
+        window.print();
     }
 </script>

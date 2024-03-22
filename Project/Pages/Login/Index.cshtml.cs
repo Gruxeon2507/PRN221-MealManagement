@@ -1,3 +1,4 @@
+using System.Data;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,6 +8,8 @@ namespace Project.Pages.Login
 {
     public class IndexModel : PageModel
     {
+        [TempData]
+        public string ErrorMessage { get; set; }
         public string Error { get; set; }
         
         private readonly PRN221_MealManagementContext _context;
@@ -18,6 +21,8 @@ namespace Project.Pages.Login
         }
         public void OnGet()
         {
+            // Clear error message on page load
+            ErrorMessage = null;
         }
         public IActionResult OnPost(string? username, string? password) { 
             User user = _context.Users.Where(u => u.Username==username).FirstOrDefault();
@@ -29,12 +34,14 @@ namespace Project.Pages.Login
                     session.SetString("username",user.Username);
                     session.SetString("role",user.Role);
                     HttpContext.Session.SetString("user", JsonSerializer.Serialize(user));
-                    return RedirectToPage("/Ingredient/Index");
+                    HttpContext.Session.SetString("role", user.Role);
+                    return RedirectToPage("/Schedule/Index");
                 }
             }
             else
             {
-                Error = "Wrong username or password";
+                ErrorMessage = "Wrong username or password";
+                return Page();
             }
             return RedirectToPage("/Login/Index");
         }
