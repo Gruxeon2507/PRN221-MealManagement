@@ -15,6 +15,6 @@ namespace Project.Models
         public string? Name { get; set; }
 
         public virtual ICollection<MealsRecipe> MealsRecipes { get; set; }
-        public virtual ICollection<RecipesIngredient>? RecipesIngredients { get; set; }
+        public virtual ICollection<RecipesIngredient> RecipesIngredients { get; set; }
     }
 }
