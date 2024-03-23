@@ -13,7 +13,7 @@ table, th, td {
 <a href="/Schedule/Index">Back to Calendar</a>
 <form method="post">
 	Choose your dish:
-    <select class="form-control" id="recipes" name="recipes" class="form-select" multiple aria-label="multiple select example">
+    <select class="form-control form-select" id="recipes" name="recipes" multiple aria-label="multiple select example">
 		@foreach(Recipe item in Model.Recipes)
 		{
 			<option value="@item.Id">@item.Name</option>
