@@ -104,3 +104,12 @@
     </nav>
 }
 </div>
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/IngredientHub").build();
+    connection.start();
+    connection.on("IngredientLoad", () => {
+        //const e = document.getElementById(idProduct);
+        //e.remove();
+        location.reload();
+    })
+</script>

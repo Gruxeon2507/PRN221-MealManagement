@@ -82,3 +82,13 @@
     </nav>
 }
 </div>
+
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/RecipeHub").build();
+        connection.start();
+        connection.on("RecipeLoad", () => {
+            //const e = document.getElementById(idProduct);
+            //e.remove();
+            location.reload();
+        })
+</script>

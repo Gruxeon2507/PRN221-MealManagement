@@ -1,7 +1,9 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Project.Hubs;
 using Project.Models;
 
 namespace Project.Pages.Schedule
@@ -10,10 +12,12 @@ namespace Project.Pages.Schedule
     {
 
         public readonly PRN221_MealManagementContext _context;
+        private readonly IHubContext<RecipesHub> _hubContext;
 
-        public UpdateMealModel(PRN221_MealManagementContext context)
+        public UpdateMealModel(PRN221_MealManagementContext context, IHubContext<RecipesHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         public Meal Meal { get; set; }
@@ -77,6 +81,7 @@ namespace Project.Pages.Schedule
             Meal = meal;
             _context.SaveChanges();
             Message = "Update successfully!!";
+            _hubContext.Clients.All.SendAsync("MealLoad");
             return RedirectToAction("./Index", new {mealId = meal.Id, message = Message});
         }
     }

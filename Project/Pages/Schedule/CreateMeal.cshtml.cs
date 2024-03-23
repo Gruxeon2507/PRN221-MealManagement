@@ -1,7 +1,10 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Project.Hubs;
+using Project.MealHubs;
 using Project.Models;
 
 namespace Project.Pages.Schedule
@@ -9,11 +12,13 @@ namespace Project.Pages.Schedule
     public class CreateMealModel : PageModel
     {
         private readonly PRN221_MealManagementContext _context;
+        private readonly IHubContext<RecipesHub> _hubContext;
 
-		public CreateMealModel(PRN221_MealManagementContext context)
-		{
-			_context = context;
-		}
+        public CreateMealModel(PRN221_MealManagementContext context, IHubContext<RecipesHub> hubContext)
+        {
+            _context = context;
+            _hubContext = hubContext;
+        }
 
         public DateTime CreatedDay { get; set; }
 
@@ -75,6 +80,7 @@ namespace Project.Pages.Schedule
            
             _context.MealsRecipes.AddRange(meal.MealsRecipes);
             _context.SaveChanges();
+            _hubContext.Clients.All.SendAsync("MealLoad");
             return RedirectToAction("Index");
 		}
 
@@ -99,6 +105,28 @@ namespace Project.Pages.Schedule
                 return NotFound(); // Handle case where recipe with given ID is not found
             }
         }
-      
+
+        public IActionResult OnGetPrint(List<int> recipeId)
+        {
+            List<Models.Recipe> recipes = new List<Models.Recipe>();
+            foreach (int id in recipeId)
+            {
+                Models.Recipe recipe = _context.Recipes.Where(r => r.Id == id)
+                .Include(r => r.RecipesIngredients)
+                .ThenInclude(ri => ri.Ingredient)
+                .FirstOrDefault();
+                if (recipe != null) recipes.Add(recipe);
+            }
+
+            if (recipes.Count != 0)
+            {
+                return Partial("RecipeDetailsPrint", recipes); // Return a partial view with recipe details
+            }
+            else
+            {
+                return NotFound(); // Handle case where recipe with given ID is not found
+            }
+        }
+
     }
 }
