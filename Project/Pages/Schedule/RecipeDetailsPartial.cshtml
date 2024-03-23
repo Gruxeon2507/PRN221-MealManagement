@@ -16,8 +16,59 @@
         }
     }
 }
+<style>
+    /* Style for table */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+    }
+
+    /* Style for table header */
+    th {
+        background-color: #f2f2f2;
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    /* Style for table cells */
+    td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    /* Style for even rows */
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    /* Style for hover effect on rows */
+    tr:hover {
+        background-color: #f2f2f2;
+    }
+
+    .custom-list {
+        padding-left: 0;
+    }
+
+        .custom-list li {
+            list-style: none;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+            .custom-list li:hover {
+                background-color: #e9ecef;
+                transform: translateY(-2px);
+            }
+</style>
 <div class="recipe-details">
-    <h2>@Model.Last().Name</h2>
+    @*<h2>@Model.Last().Name</h2>
     <table>
         <tr>
             <th>Ingredients</th>
@@ -40,6 +91,53 @@
             <td></td>
             <td>@total</td>
         </tr>
-    </table>
-    <h2>Total All: @totalAll</h2>
+    </table>*@
+ 
+    <p class="h2">Total All: @totalAll</p>
+
+    @foreach (Recipe item in Model)
+    {
+        <div class="recipe">
+            <ul class="custom-list">
+            <li class="toggle-button"><i class="fa fa-caret-down toggle-button"></i>@item.Name </li>
+            @*<button class="toggle-button">Detail<i class="fa fa-caret-down"></i></button>*@
+            <div class="ingredients" style="display:none;">
+                <table>
+                    <tr>
+                        <th>Ingredients</th>
+                        <th>Amount</th>
+                        <th>Unit Price</th>
+                    </tr>
+                    @foreach (RecipesIngredient ri in item.RecipesIngredients)
+                    {
+                        <tr>
+                            <td>@ri.Ingredient.Name</td>
+                            <td>@ri.Amount</td>
+                            <td>@ri.Ingredient.Price</td>
+                            @{
+                                total += (long)ri.Amount * (long)ri.Ingredient.Price;
+                            }
+                        </tr>
+                    }
+                    <tr>
+                        <td>Total:</td>
+                        <td></td>
+                        <td></td>
+                        <td>@total</td>
+                    </tr>
+                </table>
+            </div>
+            </ul>
+        </div>
+    }
+    <script>
+        document.querySelectorAll('.toggle-button').forEach(button => {
+            button.addEventListener('click', function() {
+                console.log('Button clicked');
+                const ingredientsDiv = this.nextElementSibling;
+                console.log('Ingredients div:', ingredientsDiv);
+                ingredientsDiv.style.display = ingredientsDiv.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+    </script>
 </div>

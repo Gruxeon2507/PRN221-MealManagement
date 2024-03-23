@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Project.Hubs;
 using Project.Models;
 
 namespace Project.Pages.Recipe
@@ -13,10 +15,12 @@ namespace Project.Pages.Recipe
     public class IndexModel : PageModel
     {
         private readonly Project.Models.PRN221_MealManagementContext _context;
+        private readonly IHubContext<RecipesHub> _hubContext;
 
-        public IndexModel(Project.Models.PRN221_MealManagementContext context)
+        public IndexModel(PRN221_MealManagementContext context, IHubContext<RecipesHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         public IList<Models.Recipe> Recipe { get;set; } = default!;

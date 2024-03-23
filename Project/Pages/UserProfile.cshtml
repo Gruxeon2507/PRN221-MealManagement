@@ -1,0 +1,59 @@
+﻿@page "/profile"
+@model Project.Pages.UserProfileModel
+@{
+}
+<style>
+    .profile-card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
+
+        .profile-picture img {
+            width: 100%;
+            height: auto;
+        }
+
+    .profile-info input[type="text"],
+    .profile-info input[type="email"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .profile-info button[type="submit"] {
+        width: 100%;
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="profile-card">
+                <div class="profile-picture">
+                    <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-photo-183042379.jpg" alt="Profile Picture">
+                </div>
+                <form id="profileForm" method="post">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" class="form-control" value="@Model.User.Username" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" value="@Model.User.Email">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

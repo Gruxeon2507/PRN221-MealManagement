@@ -12,7 +12,16 @@
 	@section Scripts{
 	<link type="text/css" href="~/css/schedule.css" rel="stylesheet" />
 	<script asp-append-version="true" src="~/js/schedule.js"></script>
+	
 	<script>
+
+		 var connection = new signalR.HubConnectionBuilder().withUrl("/RecipeHub").build();
+        connection.start();
+        connection.on("MealLoad", () => {
+            //const e = document.getElementById(idProduct);
+            //e.remove();
+            location.reload();
+        })
 
 		$(document).ready(function () {
 			var date = new Date();
@@ -57,7 +66,7 @@
 			var calendar = $('#calendar').fullCalendar({
 				header: {
 					left: 'title',
-					center: 'agendaDay,agendaWeek,month',
+					center: 'month',
 					right: 'prev,next today'
 				},
 				editable: true,
@@ -186,8 +195,7 @@
 	<style type="text/css">
 
 		body {
-			margin-bottom: 40px;
-			margin-top: 40px;
+			padding-top: 2em;
 			text-align: center;
 			font-size: 14px;
 			font-family: 'Roboto', sans-serif;
@@ -195,6 +203,7 @@
 		}
 
 		#wrap {
+			margin-top: 2em;
 			width: 1100px;
 			margin: 0 auto;
 		}
