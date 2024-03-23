@@ -3,6 +3,7 @@
 @{
 }
 @{
+    string role = HttpContext.Session.GetString("role");
 }
 @using System.Text.Json
 @using Project.Models
@@ -12,9 +13,73 @@
     }
 </style>
 <h4>Update Meal</h4>
+<button id="printButton">Print</button>
+@section Scripts {
+    <script>
+        document.getElementById('printButton').addEventListener('click', function () {
+            //var newWindow = window.open('https://www.google.com', 'Example', 'width=600,height=400');
+            var selectedRecipeId = $('#recipes').val();
+            //console.log(selectedRecipeId)
+            let dataPrint = "";
+            let url = '/Schedule/CreateMeal?handler=Print'
+            selectedRecipeId.forEach(function (data, index) {
+                url += '&recipeId=' + data;
+            })
+            //console.log(url);
+            if (selectedRecipeId) {
+                // Make an AJAX request to fetch details of the selected recipe
+                $.ajax({
+                    type: 'GET',
+                    url: url
+                    //'/Schedule/CreateMeal?handler=RecipeDetails'
+                    ,
+                    data: { recipeId: selectedRecipeId },
+                    success: function (response) {
+                        console.log('/Schedule/CreateMeal?handler=Print&recipeId=' + selectedRecipeId)
+                        // Update the recipeDetails div with the fetched recipe details
+                        console.log("Recipe details:", response);
+                        var recipeDetailsElement = $('#recipeDetails');
+                        if (recipeDetailsElement.length > 0) {
+                            dataPrint = response;
+                            recipeDetailsElement.html(response);
+                            var newWindow = window.open('', 'Meal');
+                            newWindow.document.open();
+                            newWindow.document.write(recipeDetailsElement['0'].innerHTML);
+                            newWindow.print();
+                            console.log(response);
+                        } else {
+                            console.error('Element #recipeDetails not found');
+                        }
+                        //$('#recipeDetails').html(response);
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error if needed
+                        console.error('Error:', error);
+                    }
+                });
+            } else {
+                $('#recipeDetails').empty(); // Clear the recipeDetails div if no recipe is selected
+            }
+            var recipeDetailsElement = $('#recipeDetails');
+            //console.log(recipeDetailsElement)
+            console.log(recipeDetailsElement['0'].innerHTML)
+            //var newWindow = window.open('', 'Meal');
+            //newWindow.document.open();
+            //newWindow.document.write(recipeDetailsElement['0'].innerHTML);
+            //newWindow.print(); 
+            //newWindow.document.close()
+        });
+    </script>
+}
+<br />
+@if(role == "admin")
+{
+    <button class="btn-danger" onclick="deleteMeal(@Model.Meal.Id)">Delete meal</button>
+}
+<a href="/Schedule/Index">Back to Calendar</a>
 <form method="post">
     Choose your dish:
-    <select id="recipes" name="recipes" class="form-select" multiple aria-label="multiple select example">
+    <select id="recipes" name="recipes" class="form-select form-control" multiple aria-label="multiple select example" @(role == "user" || role != "admin" ? "disabled":"")>
         @foreach (Recipe item in Model.Recipes)
         {
             bool checkRecipe = false;
@@ -39,12 +104,13 @@
     </select>
     <br />
     Message:
-    <textarea name="message">@Model.Meal.Message</textarea>
+    <textarea class="form-control" name="message">@Model.Meal.Message</textarea>
     <input type="hidden" name="id" value="@Model.Meal.Id" />
-    <button>Update Meal</button>
+    @if(role == "admin")
+    {
+        <button class="btn-primary">Update Meal</button>
+    }
 </form>
-<button onclick="deleteMeal(@Model.Meal.Id)">Delete meal</button>
-<a href="/Schedule/Index">Back to Calendar</a>
 <p>@Model.Message</p>
 <div id="recipeDetails"></div>
 <script>
@@ -144,4 +210,5 @@
         }
        
     }
+
 </script>

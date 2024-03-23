@@ -16,6 +16,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- Include Bootstrap JS -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
 </head>
 <body>
     <header>
@@ -48,12 +52,15 @@
                                 <a class="nav-link text-dark" href="/Statistic">Statistic</a>
                             </li>
                         }
+                       
                     </ul>
                     <div class="nav-item">
                         @if (username != null)
                         {
-                            @username
+                            <img width="20" height="20" src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-photo-183042379.jpg" alt="Profile Picture">
+                            @username <a href="/profile">Profile</a> <a href="/logout">Logout</a>
                         }
+                       
                     </div>
                 </div>
             </div>

@@ -10,9 +10,10 @@ table, th, td {
 }
 </style>
 <h4>Create Meal</h4>
+<a href="/Schedule/Index">Back to Calendar</a>
 <form method="post">
 	Choose your dish:
-    <select id="recipes" name="recipes" class="form-select" multiple aria-label="multiple select example">
+    <select class="form-control" id="recipes" name="recipes" class="form-select" multiple aria-label="multiple select example">
 		@foreach(Recipe item in Model.Recipes)
 		{
 			<option value="@item.Id">@item.Name</option>
@@ -20,11 +21,11 @@ table, th, td {
 	</select>
 	<br />
 	Message:
-	<textarea name="message"></textarea>
+    <textarea class="form-control" name="message"></textarea>
+    <br />
 	<input type="hidden" name="createdDay" value="@Model.CreatedDay" />
-	<button>Create Meal</button>
+	<button class="btn-primary">Create Meal</button>
 </form>
-<a href="/Schedule/Index">Back to Calendar</a>
 <div id="recipeDetails"></div>
 <script>
     $('#recipes').change(function () {

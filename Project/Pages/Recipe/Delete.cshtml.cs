@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Project.Hubs;
 using Project.Models;
 
 namespace Project.Pages.Recipe
@@ -12,10 +14,12 @@ namespace Project.Pages.Recipe
     public class DeleteModel : PageModel
     {
         private readonly Project.Models.PRN221_MealManagementContext _context;
+        private readonly IHubContext<RecipesHub> _hubContext;
 
-        public DeleteModel(Project.Models.PRN221_MealManagementContext context)
+        public DeleteModel(PRN221_MealManagementContext context, IHubContext<RecipesHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         [BindProperty]
@@ -55,7 +59,7 @@ namespace Project.Pages.Recipe
                 _context.Recipes.Remove(Recipe);
                 await _context.SaveChangesAsync();
             }
-
+            _hubContext.Clients.All.SendAsync("RecipeLoad");
             return RedirectToPage("./Index");
         }
     }

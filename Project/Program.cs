@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Project.Hubs;
 using Project.MealHubs;
 using Project.Models;
 using System;
@@ -41,6 +42,8 @@ app.UseSession();
 app.UseAuthorization();
 
 app.MapHub<MealHubs>("/SignalRHub");
+app.MapHub<RecipesHub>("/RecipeHub");
+app.MapHub<IngredientsHub>("/IngredientHub");
 
 app.MapRazorPages();
 
