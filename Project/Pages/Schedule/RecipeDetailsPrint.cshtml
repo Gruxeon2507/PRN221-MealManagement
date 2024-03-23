@@ -5,14 +5,17 @@
 
 @{
     long total = 0;
+    long calor = 0;
 }
 @{
     long totalAll = 0;
+    long totalCalor = 0;
     @foreach (Recipe item in Model)
     {
         @foreach (RecipesIngredient ri in item.RecipesIngredients)
         {
             totalAll += (long)ri.Amount * (long)ri.Ingredient.Price;
+            totalCalor += (long)ri.Amount * (long)ri.Ingredient.Calories;
         }
     }
 }
@@ -93,6 +96,7 @@
     </tr>
     </table>*@
     <p class="h2">Total All: @totalAll</p>
+    <p class="h2">Total Calo: @totalCalor</p>
     @foreach (Recipe item in Model)
     {
         <div class="recipe">
@@ -105,23 +109,34 @@
                             <th>Ingredients</th>
                             <th>Amount</th>
                             <th>Unit Price</th>
+                            <th>Calories</th>
                         </tr>
                         @foreach (RecipesIngredient ri in item.RecipesIngredients)
                         {
+                            total = 0;
+                            calor = 0;
                             <tr>
                                 <td>@ri.Ingredient.Name</td>
                                 <td>@ri.Amount</td>
                                 <td>@ri.Ingredient.Price</td>
+                                <td>@ri.Ingredient.Calories</td>
                                 @{
                                     total += (long)ri.Amount * (long)ri.Ingredient.Price;
+                                    calor += (long)ri.Amount * (long)ri.Ingredient.Calories;
                                 }
                             </tr>
                         }
                         <tr>
-                            <td>Total:</td>
+                            <td>Total Price:</td>
                             <td></td>
                             <td></td>
                             <td>@total</td>
+                        </tr>
+                        <tr>
+                            <td>Total Calor:</td>
+                            <td></td>
+                            <td></td>
+                            <td>@calor</td>
                         </tr>
                     </table>
                 </div>

@@ -5,6 +5,7 @@
 
 @{
     long total = 0;
+    long calor = 0;
 }
 @{
     long totalAll = 0;
@@ -107,24 +108,35 @@
                         <th>Ingredients</th>
                         <th>Amount</th>
                         <th>Unit Price</th>
+                        <th>Calories</th>
                     </tr>
                     @foreach (RecipesIngredient ri in item.RecipesIngredients)
                     {
-                        <tr>
+                            total = 0;
+                            calor = 0;
+                            <tr>
                             <td>@ri.Ingredient.Name</td>
                             <td>@ri.Amount</td>
                             <td>@ri.Ingredient.Price</td>
+                            <td>@ri.Ingredient.Calories</td>
                             @{
                                 total += (long)ri.Amount * (long)ri.Ingredient.Price;
+                                calor += (long)ri.Amount * (long)ri.Ingredient.Calories;
                             }
                         </tr>
                     }
-                    <tr>
-                        <td>Total:</td>
-                        <td></td>
-                        <td></td>
-                        <td>@total</td>
-                    </tr>
+                        <tr>
+                            <td>Total Price:</td>
+                            <td></td>
+                            <td></td>
+                            <td>@total</td>
+                        </tr>
+                        <tr>
+                            <td>Total Calor:</td>
+                            <td></td>
+                            <td></td>
+                            <td>@calor</td>
+                        </tr>
                 </table>
             </div>
             </ul>
