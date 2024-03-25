@@ -105,12 +105,13 @@ namespace Project.Pages.Ingredient
                 var data = _context.Ingredients.ToList(); // Assuming ExcelDatas is your DbSet<ExcelData>
 
                 // Add headers
-                worksheet.Cells[1, 1].Value = "Name";
-                worksheet.Cells[1, 2].Value = "Price";
-                worksheet.Cells[1, 3].Value = "Calories";
+                worksheet.Cells[1, 1].Value = "Danh Sach Mon";
+                worksheet.Cells[2, 1].Value = "Name";
+                worksheet.Cells[2, 2].Value = "Price";
+                worksheet.Cells[2, 3].Value = "Calories";
 
                 // Add data
-                int row = 2;
+                int row = 3;
                 foreach (var item in data)
                 {
                     worksheet.Cells[row, 1].Value = item.Name;

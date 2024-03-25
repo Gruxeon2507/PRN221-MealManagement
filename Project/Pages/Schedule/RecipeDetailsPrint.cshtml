@@ -111,10 +111,13 @@
                             <th>Unit Price</th>
                             <th>Calories</th>
                         </tr>
-                        @foreach (RecipesIngredient ri in item.RecipesIngredients)
-                        {
+                        @{
                             total = 0;
                             calor = 0;
+                        }
+                        @foreach (RecipesIngredient ri in item.RecipesIngredients)
+                        {
+                           
                             <tr>
                                 <td>@ri.Ingredient.Name</td>
                                 <td>@ri.Amount</td>

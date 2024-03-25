@@ -11423,19 +11423,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nocol\\.nuget\\packages\\": {}
+    "C:\\Users\\khieu\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\project_PRN\\PRN221-MealManagement\\Project\\Project.csproj",
+      "projectUniqueName": "D:\\PRN221-MealManagement\\Project\\Project.csproj",
       "projectName": "Project",
-      "projectPath": "G:\\project_PRN\\PRN221-MealManagement\\Project\\Project.csproj",
-      "packagesPath": "C:\\Users\\nocol\\.nuget\\packages\\",
-      "outputPath": "G:\\project_PRN\\PRN221-MealManagement\\Project\\obj\\",
+      "projectPath": "D:\\PRN221-MealManagement\\Project\\Project.csproj",
+      "packagesPath": "C:\\Users\\khieu\\.nuget\\packages\\",
+      "outputPath": "D:\\PRN221-MealManagement\\Project\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\nocol\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\khieu\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -11509,7 +11509,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

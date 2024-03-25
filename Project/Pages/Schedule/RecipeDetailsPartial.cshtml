@@ -9,11 +9,13 @@
 }
 @{
     long totalAll = 0;
+    long totalCalor = 0;
     @foreach(Recipe item in Model)
     {
         @foreach (RecipesIngredient ri in item.RecipesIngredients)
         {
                     totalAll += (long)ri.Amount * (long)ri.Ingredient.Price;
+            totalCalor +=  (long)ri.Ingredient.Calories;
         }
     }
 }
@@ -94,7 +96,8 @@
         </tr>
     </table>*@
  
-    <p class="h2">Total All: @totalAll</p>
+    <p class="h2">Total Price: @totalAll</p>
+    <p class="h2">Total Calories: @totalCalor</p>
 
     @foreach (Recipe item in Model)
     {
@@ -110,10 +113,13 @@
                         <th>Unit Price</th>
                         <th>Calories</th>
                     </tr>
-                    @foreach (RecipesIngredient ri in item.RecipesIngredients)
-                    {
+                    @{
                             total = 0;
                             calor = 0;
+                    }
+                    @foreach (RecipesIngredient ri in item.RecipesIngredients)
+                    {
+                           
                             <tr>
                             <td>@ri.Ingredient.Name</td>
                             <td>@ri.Amount</td>
@@ -121,7 +127,7 @@
                             <td>@ri.Ingredient.Calories</td>
                             @{
                                 total += (long)ri.Amount * (long)ri.Ingredient.Price;
-                                calor += (long)ri.Amount * (long)ri.Ingredient.Calories;
+                                calor += (long)ri.Ingredient.Calories;
                             }
                         </tr>
                     }

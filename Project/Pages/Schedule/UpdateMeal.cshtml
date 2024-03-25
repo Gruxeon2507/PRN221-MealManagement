@@ -13,7 +13,7 @@
     }
 </style>
 <h4>Update Meal</h4>
-<button id="printButton">Print</button>
+<button class="btn btn-primary mb-2" id="printButton">Print</button>
 @section Scripts {
     <script>
         document.getElementById('printButton').addEventListener('click', function () {
@@ -74,7 +74,7 @@
 <br />
 @if(role == "admin")
 {
-    <button class="btn-danger" onclick="deleteMeal(@Model.Meal.Id)">Delete meal</button>
+    <button class="btn btn-danger" onclick="deleteMeal(@Model.Meal.Id)">Delete meal</button>
 }
 <a href="/Schedule/Index">Back to Calendar</a>
 <form method="post">
@@ -108,7 +108,7 @@
     <input type="hidden" name="id" value="@Model.Meal.Id" />
     @if(role == "admin")
     {
-        <button class="btn-primary">Update Meal</button>
+        <button class="btn btn-primary">Update Meal</button>
     }
 </form>
 <p>@Model.Message</p>
